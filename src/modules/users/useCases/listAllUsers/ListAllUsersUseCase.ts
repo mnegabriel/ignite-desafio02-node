@@ -9,7 +9,13 @@ class ListAllUsersUseCase {
   constructor(private usersRepository: IUsersRepository) {}
 
   execute({ user_id }: IRequest): User[] {
-    // Complete aqui
+    const userExists = this.usersRepository.findById(user_id);
+
+    if (!userExists || !userExists.admin) {
+      throw new Error("Not Authorized for this procedure");
+    }
+
+    return this.usersRepository.list();
   }
 }
 
